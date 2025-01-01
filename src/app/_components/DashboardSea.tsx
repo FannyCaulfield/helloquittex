@@ -3,8 +3,10 @@
 import Image from 'next/image';
 import { plex } from '@/app/fonts/plex';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 
-import logoHQX from '../../../public/logoxHQX/HQX-rose-FR.svg';
+
+// import logoHQX from '../../../public/logoxHQX/HQX-rose-FR.svg';
 import seaBackground from '../../../public/sea.svg';
 import Boat from './Boat';
 
@@ -14,12 +16,18 @@ import progress50 from '../../../public/progress/progress-50.svg';
 import progress75 from '../../../public/progress/progress-75.svg';
 import progress100 from '../../../public/progress/progress-100.svg';
 
+import { getLogoPath } from '@/lib/logo-utils';
+
+
 interface SeaProps {
   progress: number;
 }
 
 export default function Sea({ progress }: SeaProps) {
   const t = useTranslations('dashboardSea');
+  const { locale } = useParams();
+  const logoPath = getLogoPath(locale as string, 'pink');
+
   const ProgressImage = ({ progress }: { progress: number }) => {
     let img;
     let scale = 1;
@@ -100,7 +108,7 @@ export default function Sea({ progress }: SeaProps) {
         <Image src={seaBackground} fill alt="" className="object-cover"></Image>
         <div className="relative z-10 pt-12">
           <Image
-            src={logoHQX}
+            src={logoPath}
             alt={t('logo.alt')}
             width={306}
             height={125}

@@ -26,12 +26,7 @@ import { AnimatePresence } from 'framer-motion';
 import logoHQX from '../../../public/logoxHQX/HQX-rose-FR.svg';
 import  Footer from '@/app/_components/Footer';
 import { useTranslations } from 'next-intl';
-
-
-// const supabase = createClient(
-//   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-//   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-// );
+import { getLogoPath } from '@/lib/logo-utils';
 
 
 
@@ -57,6 +52,7 @@ export default function DashboardPage() {
   console.log('session par ici:', session)
   const router = useRouter();
   const params = useParams();
+  const logoPath = getLogoPath(params.locale as string, 'blanc');
 
   const t = useTranslations('dashboard');
 

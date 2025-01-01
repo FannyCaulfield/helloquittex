@@ -305,7 +305,7 @@ providers: [
     })
   ],
   pages: {
-    signIn: '/:locale/auth/signin',
-    error: '/:locale/auth/error'
+    signIn: '/auth/signin',
+    error: '/auth/error'
   }
 } satisfies NextAuthConfig;

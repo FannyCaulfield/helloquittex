@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useRouter, useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { getLogoPath } from '@/lib/logo-utils';
+
 
 import ErrorModal from "../../_components/ErrorModal";
 import ConsentModal from "../../_components/ConsentModal";
@@ -14,7 +16,6 @@ import { validateTwitterData, extractTargetFiles } from '../../_components/Uploa
 import Image from 'next/image';
 import seaBackground from '../../../public/sea.svg'
 import { plex } from '../../fonts/plex';
-import logoHQX from '../../../../public/logoxHQX/HQX-rose-FR.svg'
 import { motion } from 'framer-motion';
 import boat1 from '../../../public/boats/boat-1.svg'
 import Footer from "@/app/_components/Footer";
@@ -34,6 +35,8 @@ const MAX_FILE_SIZE = 1000 * 1024 * 1024; // 1GB
 export default function UploadPage() {
   const router = useRouter();
   const params = useParams();
+  const logoPath = getLogoPath(params.locale as string, 'blanc');
+
   const { data: session, status } = useSession();
   const [error, setError] = useState<string | null>(null);
   const [showConsent, setShowConsent] = useState(false);
@@ -400,7 +403,7 @@ export default function UploadPage() {
       <Header />
       <div className="relative z-10 pt-12">
         <Image
-          src={logoHQX}
+          src={logoPath}
           alt={t('logo.alt')}
           width={306}
           height={125}

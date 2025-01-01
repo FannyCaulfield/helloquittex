@@ -9,11 +9,12 @@ import ErrorModal from "../../../_components/ErrorModal";
 import Image from 'next/image';
 import seaBackground from '../../../../public/sea.svg';
 import { plex } from '../../../fonts/plex';
-import logoHQX from '../../../../../public/logoxHQX/HQX-rose-FR.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 import boat1 from '../../../../../public/boats/boat-1.svg';
 import { Loader2 } from 'lucide-react';
 import Footer from "@/app/_components/Footer";
+import { getLogoPath } from '@/lib/logo-utils';
+
 
 
 interface JobStatus {
@@ -47,6 +48,8 @@ export default function LargeFilesPage() {
   const searchParams = useSearchParams();
   const params = useParams();
   const t = useTranslations('largeFiles');
+  const logoPath = getLogoPath(params.locale as string, 'blanc');
+
 
   const jobId = searchParams.get('jobId');
   const followerCount = parseInt(searchParams.get('followerCount') || '0', 10);
@@ -141,7 +144,7 @@ export default function LargeFilesPage() {
       
       <div className="flex justify-center mt-8 mb-8">
         <Image
-          src={logoHQX}
+          src={logoPath}
           alt={t('logo.alt')}
           width={306}
           height={125}
