@@ -159,7 +159,7 @@
             "value": "{count} comptes prêts"
             }
         },
-    "inviteFriends": "Invitez vos abonné.e.s à partir avec vous !",
+    "inviteFriends": "Invitez vos abonné·e·s à partir avec vous !",
     "redirecting": "Redirection vers le tableau de bord..."
   },
   "signin": {
@@ -178,25 +178,25 @@
     "addSocialNetwork": "Ajouter un réseau social",
     "addSocialNetworkDescription": "Connectez-vous à d'autres réseaux sociaux pour enrichir votre expérience",
     "migrationStep": {
-      "completed1": "Bravo ! Vous avez terminé la première des deux étapes de la migration.",
-      "completed2": "N'oubliez par d'inviter vos abonnés à s’inscrire sur OpenPortability. En 1min ils pourront être reconnectés à votre compte, même sans leur archive.\nLa phase 2 de la reconnexion interviendra dans quelques jours. Selon vos préférences, vous recevrez une notification par e-mail ou pourrez suivre le lancement sur nos comptes X, BlueSky et Mastodon.\nRestez à l’affût, de belles surprises vous attendent !",
+      "completed1": "Bravo ! Vous avez terminé la première des deux étapes de la migration.",
+      "completed2": "N'oubliez par d'inviter vos abonné·e·s à s'inscrire sur OpenPortability. En 1min ils·elles pourront être reconnecté·e·s à votre compte, même sans leur archive.\nLa phase 2 de la reconnexion interviendra dans quelques jours. Selon vos préférences, vous recevrez une notification par e-mail ou pourrez suivre le lancement sur nos comptes X, BlueSky et Mastodon.\nRestez à l'affût, de belles surprises vous attendent !",
       "nextSteps": "Effectuez les étapes suivantes pour voguer vers de nouveaux horizons !"
     },
     "importButton": "Importer mon archive Twitter/X",
     "shareModal": {
       "title": "Partager votre voyage",
       "shareOn": "Partager sur {platform}",
-      "shareText": "Je viens de faire mon #eXit! L’exode de X est massif. Ne perdez pas un seul de vos abonnés. Grâce à #OpenPortability j’ai inscrit {count} nouveaux passagers pour partir vers #BlueSky & #Mastodon. Retrouvez automatiquement vos communautés le #20Janvier via https://openportability.org !"
+      "shareText": "Je viens de faire mon #eXit! L'exode de X est massif. Ne perdez pas un·e seul·e de vos abonné·e·s. Grâce à #OpenPortability j'ai inscrit {count} nouveaux·elles passager·ère·s pour partir vers #BlueSky & #Mastodon. Retrouvez automatiquement vos communautés le #20Janvier via https://openportability.org !"
     },
     "newsletter": {
-      "title": "Restez informé.e",
-      "description": "Resté.e informé.e de la dernière étape et des nouvelles fonctionnalités.",
-      "subscribe": "Rester informé.e des prochaines étapes",
-      "subscribed": "Vous êtes inscrit.e à la newsletter !",
+      "title": "Restez informé·e",
+      "description": "Restez informé·e de la dernière étape et des nouvelles fonctionnalités.",
+      "subscribe": "Rester informé·e des prochaines étapes",
+      "subscribed": "Vous êtes inscrit·e à la newsletter !",
       "emailLabel": "Votre adresse email",
       "emailPlaceholder": "exemple@email.com",
       "acceptHQX": "Je veux recevoir des updates de OpenPortability",
-      "acceptOEP": "Je souhaite aussi être informé.e des prochaines initiatives de [On est prêt](https://www.onestpret.com), qui accompagne OpenPortability",
+      "acceptOEP": "Je souhaite aussi être informé·e des prochaines initiatives de [On est prêt](https://www.onestpret.com), qui accompagne OpenPortability",
       "subscribing": "Inscription en cours...",
       "confirmSubscribe": "Confirmer l'inscription"
     },
@@ -463,7 +463,7 @@
   },
 "reconnexionModal": {
   "title": "Vous venez d'activer la connexion avec {count} comptes !",
-  "message": "Félicitations, votre reconnexion est bien effectuée, vous êtes arrivé à bon port.",
+  "message": "Félicitations, votre reconnexion est bien effectuée, vous êtes arrivé·e à bon port.",
   "stayInformed": "RESTEZ INFORMÉ DES NOUVELLES CONNEXIONS",
   "progressTitle": "Reconnexion en cours : {succeeded} sur {total} comptes",
   "progressMessage": "Veuillez patienter pendant que nous effectuons la reconnexion de vos comptes...",
