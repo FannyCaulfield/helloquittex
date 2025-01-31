@@ -511,9 +511,11 @@
     "secondObjective": "You've completed the 2nd objective and reconnected with {count} accounts. You've reached your destination!",
     "notification": "We'll continue to notify you if new accounts can be reconnected, by email or through your preferred network, according to your preferences.",
     "stats": {
-      "blueskyFollowing": "Followings found on Bluesky",
-      "mastodonFollowing": "Followings found on Mastodon"
+      "blueskyFollowing": "Following on Bluesky",
+      "mastodonFollowing": "Following on Mastodon"
     },
+    "remainingAccounts": "{count} accounts remaining to reconnect",
+    "showRemainingOptions": "RECONNECT REMAINING ACCOUNTS",
     "firstObjective": "1st objective completed, you're registered for the journey!"
   },
   "launchReconnection": {

@@ -446,6 +446,17 @@
         "loading": "Reconexión en curso...",
         "alreadyReconnected": "Ya te hemos reconectado con {count} cuentas. ¡Vuelve más tarde para continuar tu reconexión!"
     },
+    "SuccessAutomaticReconnexion": {
+        "congratulations": "¡Felicitaciones",
+        "secondObjective": "Has completado el segundo objetivo y te has reconectado con {count} cuentas. ¡Has llegado a tu destino!",
+        "notification": "Continuaremos notificándote si se pueden reconectar nuevas cuentas, por correo electrónico o a través de tu red preferida, según tus preferencias.",
+        "stats": {
+            "blueskyFollowing": "Siguiendo en Bluesky",
+            "mastodonFollowing": "Siguiendo en Mastodon"
+        },
+        "remainingAccounts": "Quedan {count} cuentas por reconectar",
+        "showRemainingOptions": "RECONECTAR CUENTAS RESTANTES"
+    },
     "privacy_policy": {
         "title": "Aviso de Información sobre Protección de Datos",
         "subtitle": "Instituto de Sistemas Complejos París Ile de France | Enero 2025",

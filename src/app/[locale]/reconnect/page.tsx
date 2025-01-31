@@ -102,7 +102,7 @@ export default function MigratePage() {
     }
 
     verifyTokens()
-  }, []) // Ce useEffect s'exécute une seule fois au chargement
+  }, [])
 
   useEffect(() => {
 
@@ -213,27 +213,14 @@ export default function MigratePage() {
     fetchMastodonInstances()
   }, [])
 
-  const checkTokens = async () => {
-    try {
-      const response = await fetch('/api/auth/refresh', {
-        method: 'POST',
-        headers: {
-          'Cache-Control': 'no-cache'
-        }
-      })
-      const data = await response.json()
+  useEffect(() => {
+    console.log("isReconnectionComplete", isReconnectionComplete)
+  }, [isReconnectionComplete])
 
-      if (!data.success) {
-        setInvalidTokenProviders(data.providers || [])
-        return false
-      }
 
-      return true
-    } catch (error) {
-      console.error('Error checking tokens:', error)
-      return false
-    }
-  }
+  
+
+
 
 
   if (isLoading) {
@@ -393,10 +380,8 @@ export default function MigratePage() {
       }
 
       // Migration completed
-      if (isAutomaticReconnect) {
         setIsReconnectionComplete(true);
-      }
-      setIsMigrating(false);
+        setIsMigrating(false);
       
       // Refresh the session to update follow status
       // await updateSession();
@@ -479,6 +464,10 @@ export default function MigratePage() {
                       }}
                       stats={stats}
                       onSuccess={refreshStats}
+                      onShowReconnectionOptions={() => {
+                        setShowOptions(true);
+                        setIsReconnectionComplete(false);
+                      }}
                     />
               ) : stats?.matches?.bluesky?.notFollowed === 0 && stats?.matches?.mastodon?.notFollowed === 0 ? (
                 <SuccessAutomaticReconnexion
@@ -491,8 +480,8 @@ export default function MigratePage() {
                   }}
                   stats={stats}
                   onSuccess={refreshStats}
-                        />
-                      ) : isAutomaticReconnect ? (
+                />
+              ) : isAutomaticReconnect ? (
                         <AutomaticReconnexion
                   results={migrationResults || { bluesky: { attempted: 0, succeeded: 0 }, mastodon: { attempted: 0, succeeded: 0 } }}
                   onPause={toggleAutomaticReconnect}

@@ -38,17 +38,20 @@ interface SuccessAutomaticReconnexionProps {
     updated_at: string;
   };
   onSuccess: () => void;
+  onShowReconnectionOptions?: () => void;
 }
 
 export default function SuccessAutomaticReconnexion({
   session,
   stats,
   onSuccess,
+  onShowReconnectionOptions,
 }: SuccessAutomaticReconnexionProps) {
   const t = useTranslations('SuccessAutomaticReconnexion');
   const totalReconnected = (session.user.bluesky_username ? stats.matches.bluesky.hasFollowed : 0) + 
                           (session.user.mastodon_username ? stats.matches.mastodon.hasFollowed : 0);
-
+  const remainingAccounts = (session.user.bluesky_username ? stats.matches.bluesky.notFollowed : 0) + 
+                          (session.user.mastodon_username ? stats.matches.mastodon.notFollowed : 0);
 
   console.log("stats from SuccessAutomaticReconnexion", totalReconnected)
   useEffect(() => {
@@ -151,6 +154,20 @@ export default function SuccessAutomaticReconnexion({
           </p>
         </div>
       </div>
+
+      {remainingAccounts > 0 && onShowReconnectionOptions && (
+        <div className="mt-8 text-center">
+          <p className="text-[#ebece7] mb-4">
+            {t.rich('remainingAccounts', { count: remainingAccounts })}
+          </p>
+          <button
+            onClick={onShowReconnectionOptions}
+            className="px-6 py-3 bg-[#d6356f] text-white rounded-full font-bold hover:bg-[#e4477f] transition-colors duration-300"
+          >
+            {t('showRemainingOptions')}
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 }

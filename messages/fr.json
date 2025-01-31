@@ -499,13 +499,15 @@
   },
   "SuccessAutomaticReconnexion": {
     "congratulations": "Un grand bravo",
-    "secondObjective": "Vous avez terminé le 2ème objectif et vous vous êtes reconnecté à {count} comptes. Vous êtes arrivé à bon port !",
-    "notification": "Nous continuerons à vous informer si de nouveaux comptes peuvent être reconnectés, par mail ou par le réseau de votre choix, selon vos préférences.",
+    "secondObjective": "{count} comptes ont été reconnectés avec succès",
+    "firstObjective": "Votre compte a été connecté avec succès à vos nouveaux réseaux sociaux !",
+    "notification": "Vous serez notifié lorsque de nouveaux comptes seront retrouvés.",
     "stats": {
-      "blueskyFollowing": "Reconnexions sur Bluesky",
-      "mastodonFollowing": "Reconnexions sur Mastodon"
+      "blueskyFollowing": "Comptes suivis sur Bluesky",
+      "mastodonFollowing": "Comptes suivis sur Mastodon"
     },
-    "firstObjective": "1er objectif réussi, vous êtes inscrit.e pour le voyage !"
+    "remainingAccounts": "Il reste {count} comptes à reconnecter",
+    "showRemainingOptions": "RECONNECTER LES COMPTES RESTANTS"
   },
   "launchReconnection": {
     "firstObjective": {
