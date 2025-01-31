@@ -68,7 +68,9 @@ export default function BlueSkyLogin({ onLoginComplete }: BlueSkyLoginProps) {
       }
 
       if (result?.ok) {
-        router.push(`/${locale}/dashboard`);
+        const isReconnectPage = window.location.pathname.includes('/reconnect');
+        const redirectPath = isReconnectPage ? 'reconnect' : 'dashboard';
+        router.push(`/${locale}/${redirectPath}`);
       }
 
     } catch (err) {
