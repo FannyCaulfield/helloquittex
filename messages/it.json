@@ -1,0 +1,484 @@
+{
+    "connectedAccounts": {
+        "services": {
+            "twitter": "Twitter",
+            "bluesky": "BlueSky",
+            "mastodon": "Mastodon"
+        },
+        "connectedWith": "Sei connesso con {services} ✨",
+        "and": "e"
+    },
+    "header": {
+        "profile": {
+            "username": "@{username}"
+        },
+        "logout": "Esci"
+    },
+    "blueskyLogin": {
+        "title": "Connetti a BlueSky",
+        "description": "Connettiti all'utenza BlueSky per sincronizzare i tuoi dati e godere di un'esperienza completa.",
+        "tooltip": {
+            "noAccount": "Non hai ancora un account BlueSky?",
+            "createAccount": "Creane uno qui",
+            "info": ""
+        },
+        "form": {
+            "password": {
+                "placeholder": "••••••••",
+                "label": "Password dell'applicazione",
+                "help": ""
+            },
+            "identifier": {
+                "placeholder": "username.bsky.social",
+                "label": ""
+            },
+            "errors": {
+                "default": "",
+                "missingFields": ""
+            },
+            "submit": ""
+        }
+    },
+    "footer": {
+        "hosted": {
+            "hqx": "HelloQuitX",
+            "cnrs": "CNRS/ISC-PIF",
+            "text": "Questa piattaforma è ospitata da {cnrs} e sviluppata in collaborazione con {hqx}"
+        },
+        "copyright": "© {year} HelloQuitX. Tutti i diritti riservati."
+    },
+    "consentModal": {
+        "title": "Conferma dell'upload",
+        "buttons": {
+            "cancel": "Annulla",
+            "accept": "Accetta e continua"
+        },
+        "conditions": {
+            "ownership": "Sei lə proprietariə legittimə di questi dati.",
+            "profileCreation": "Comprendi che questi dati saranno usati per creare il tuo profilo su HelloQuitX.",
+            "cnrsUsage": "Accetti che i dati forniti vengano usati dal Centro Nazionale per la Ricerca Scientifica (CNRS) nell'ambito dell'operazione HelloQuitX."
+        },
+        "description": "Caricando i tuoi file di Twitter, confermi che:"
+    },
+    "errorModal": {
+        "title": "Errore di caricamento",
+        "close": "Chiudi",
+        "extractArchive": {
+            "mac": "",
+            "steps": {
+                "linux": {
+                    "step1": "",
+                    "step3": "",
+                    "step2": ""
+                },
+                "mac": {
+                    "step1": "",
+                    "step2": ""
+                },
+                "windows": {
+                    "step4": "",
+                    "step2": "",
+                    "step3": "",
+                    "step1": ""
+                }
+            },
+            "linux": "",
+            "windows": "",
+            "title": ""
+        }
+    },
+    "dashboardLoginButtons": {
+        "services": {
+            "twitter": "Twitter",
+            "mastodon": {
+                "title": "Mastodon",
+                "instances": {
+                    "piaille": "piaille.fr",
+                    "mastodon": "mastodon.social"
+                },
+                "error": {
+                    "invalid_format": "",
+                    "fetch_instances": "",
+                    "special_chars": "",
+                    "too_long": "",
+                    "required": "",
+                    "unreachable": ""
+                },
+                "instance": "",
+                "connect": ""
+            },
+            "bluesky": "BlueSky"
+        },
+        "addSocialNetwork": "Aggiungi un altro social network",
+        "importTwitter": "Importa il mio archivio Twitter",
+        "connectedDashboard": {
+            "mastodon": "",
+            "twitter": "",
+            "bluesky": ""
+        }
+    },
+    "loginButtons": {
+        "twitter": {
+            "notDeleted": "Ho un account Twitter",
+            "continue": "Continua con Twitter"
+        },
+        "mastodon": {
+            "connect": ""
+        },
+        "bluesky": {
+            "connect": ""
+        },
+        "deleteAccount": ""
+    },
+    "dashboard": {
+        "newsletter": {
+            "acceptOEP": "",
+            "subscribing": "",
+            "confirmSubscribe": "",
+            "emailLabel": "",
+            "description": "",
+            "subscribed": "",
+            "acceptHQX": "",
+            "subscribe": "",
+            "emailPlaceholder": "",
+            "title": ""
+        },
+        "addSocialNetwork": "",
+        "loading": "",
+        "migrationStep": {
+            "daysLeft": "",
+            "nextSteps": "",
+            "completed1": "",
+            "completed2": ""
+        },
+        "addSocialNetworkDescription": "",
+        "importButton": "",
+        "tutorial": {
+            "watchVideo": "",
+            "title": "",
+            "description": ""
+        },
+        "shareModal": {
+            "title": "",
+            "shareOn": "",
+            "shareText": ""
+        }
+    },
+    "dashboardSea": {
+        "welcome": "",
+        "logo": {
+            "alt": ""
+        },
+        "logoCNRS": {
+            "alt": ""
+        }
+    },
+    "upload": {
+        "loading-indic": "",
+        "helpButton": "",
+        "helpModal": {
+            "title": "",
+            "description": "",
+            "steps": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "note": ""
+        },
+        "logo": {
+            "alt": ""
+        },
+        "errors": {
+            "noFiles": "",
+            "invalidCombination": "",
+            "fileType": "",
+            "fileSize": ""
+        },
+        "loading": {
+            "default": "",
+            "uploading": ""
+        },
+        "logoCNRS": {
+            "alt": ""
+        },
+        "loading-uploading": "",
+        "title": "",
+        "action": "",
+        "description": ""
+    },
+    "largeFiles": {
+        "progress": {
+            "total": {
+                "title": "",
+                "processed": ""
+            },
+            "followers": {
+                "title": "",
+                "processed": ""
+            },
+            "following": {
+                "processed": "",
+                "title": ""
+            }
+        },
+        "logo": {
+            "alt": ""
+        },
+        "status": {
+            "processing": "",
+            "completed": "",
+            "title": "",
+            "pending": "",
+            "failed": ""
+        },
+        "button": {
+            "dashboard": ""
+        },
+        "stats": {
+            "followers": "",
+            "following": ""
+        },
+        "logoCNRS": {
+            "alt": ""
+        }
+    },
+    "profile": {
+        "unlinkConfirmation": "",
+        "unlinkSuccess": "",
+        "unlinkError": "",
+        "providers": {
+            "twitter": "",
+            "bluesky": "",
+            "mastodon": ""
+        },
+        "errors": {
+            "lastAccount": "",
+            "notLinked": ""
+        },
+        "unlinkButton": ""
+    },
+    "migrationComplete": {
+        "success": {
+            "viewProfile": "",
+            "displayName": "",
+            "description": "",
+            "title": ""
+        },
+        "error": {
+            "title": "",
+            "createAccount": "",
+            "retry": ""
+        }
+    },
+    "progressSteps": {
+        "dashboard": {
+            "title": ""
+        },
+        "socialNetworks": {
+            "title": ""
+        },
+        "import": {
+            "title": "",
+            "description": {
+                "withStats": ""
+            }
+        },
+        "share": {
+            "title": ""
+        }
+    },
+    "partageButton": {
+        "share": "",
+        "shareOn": ""
+    },
+    "successModal": {
+        "title": "",
+        "following": {
+            "title": "",
+            "username": ""
+        },
+        "followers": {
+            "username": "",
+            "title": ""
+        },
+        "close": ""
+    },
+    "uploadResults": {
+        "congratulations": "",
+        "inviteFriends": "",
+        "stats": {
+            "twitterAccounts": {
+                "value": "",
+                "label": ""
+            },
+            "readyTravelers": {
+                "label": "",
+                "value": ""
+            },
+            "totalImported": {
+                "label": "",
+                "value": ""
+            }
+        },
+        "redirecting": "",
+        "importSuccess": ""
+    },
+    "signin": {
+        "title": "",
+        "loading": "",
+        "subtitle": "",
+        "logoCNRS": {
+            "alt": ""
+        },
+        "logo": {
+            "alt": ""
+        }
+    },
+    "settings": {
+        "deleteAccount": "",
+        "deleteConfirm": {
+            "cancel": "",
+            "confirm": "",
+            "message": "",
+            "title": ""
+        },
+        "notifications": {
+            "title": "",
+            "oepNewsletter": "",
+            "hqxNewsletter": ""
+        },
+        "logout": ""
+    },
+    "migrate": {
+        "title": "",
+        "matches_found": "",
+        "migrating": "",
+        "deselectAll": "",
+        "following": "",
+        "selectAll": "",
+        "followers": "",
+        "startMigration": "",
+        "loading": ""
+    },
+    "ReconnexionOptions": {
+        "buttons": {
+            "automatic": "",
+            "manual": ""
+        },
+        "descriptions": {
+            "automatic": "",
+            "manual": ""
+        },
+        "stats": {
+            "connections": "",
+            "bluesky": "",
+            "networks": ""
+        }
+    },
+    "migrateSea": {
+        "matchDetails": {
+            "bluesky": "",
+            "mastodon": ""
+        },
+        "logo": {
+            "alt": ""
+        },
+        "title": "",
+        "matchMessage": ""
+    },
+    "ManualReconnexion": {
+        "automaticReconnect": "",
+        "title": "",
+        "connect": "",
+        "prev": "",
+        "selectAll": "",
+        "mastodonBlueskyCorrespondence": "",
+        "next": "",
+        "xAccountPseudo": "",
+        "followOnMastodon": "",
+        "followOnBluesky": ""
+    },
+    "AccountToMigrate": {
+        "followOnMastodon": "",
+        "followedOnMastodon": "",
+        "followedOnBluesky": "",
+        "followOnBluesky": ""
+    },
+    "reconnexionModal": {
+        "message": "",
+        "title": "",
+        "progressMessage": "",
+        "progressTitle": "",
+        "migrationCompleteStats": "",
+        "migrationComplete": "",
+        "migrationInProgress": "",
+        "migrationProgress": "",
+        "stayInformed": "",
+        "minimize": "",
+        "close": ""
+    },
+    "Migrate": {
+        "migrationInProgress": "",
+        "migrationComplete": "",
+        "migrationProgress": "",
+        "migrationCompleteStats": "",
+        "minimize": "",
+        "close": ""
+    },
+    "firstSeen": {
+        "newsletter": {
+            "emailLabel": "",
+            "errors": {
+                "missingEmail": ""
+            },
+            "researchConsent": "",
+            "emailPlaceholder": "",
+            "consent": "",
+            "subtitle": ""
+        },
+        "title": "",
+        "dismiss": "",
+        "description": "",
+        "cta": ""
+    },
+    "uploadButton": {
+        "dropHere": "",
+        "uploadInProgress": "",
+        "error": {
+            "uploadFailed": ""
+        },
+        "clickOrDrop": ""
+    },
+    "support": {
+        "modal": {
+            "form": {
+                "submit": "",
+                "message": {
+                    "label": "",
+                    "placeholder": ""
+                },
+                "email": {
+                    "label": "",
+                    "placeholder": ""
+                },
+                "subject": {
+                    "placeholder": "",
+                    "label": ""
+                },
+                "submitting": ""
+            },
+            "error": {
+                "send": "",
+                "unknown": ""
+            },
+            "description": "",
+            "title": ""
+        }
+    }
+}
