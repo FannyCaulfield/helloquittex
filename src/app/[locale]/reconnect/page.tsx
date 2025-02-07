@@ -16,7 +16,7 @@ import Link from 'next/link'
 import DashboardLoginButtons from '@/app/_components/DashboardLoginButtons'
 
 // Dynamic imports for heavy components
-const MigrateSea = dynamic(() => import('@/app/_components/MigrateSea'), {
+const DashboardSea = dynamic(() => import('@/app/_components/DashboardSea'), {
   loading: () => <div className="animate-pulse bg-blue-900/50 h-[600px]" />
 })
 
@@ -59,13 +59,18 @@ const ManualReconnexion = dynamic(() => import('@/app/_components/ManualReconnex
 //   };
 // };
 
+type ProviderStatus = 'reconnection' | 'first_connect';
+type MissingProvidersType = {
+  [key in 'bluesky' | 'mastodon']?: ProviderStatus;
+};
+
 export default function MigratePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const t = useTranslations('migrate')
   const tRefresh = useTranslations('refreshToken')
   const [userProfile, setUserProfile] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [isMigrating, setIsMigrating] = useState(false)
   const [showOptions, setShowOptions] = useState(true)
   const [isAutomaticReconnect, setIsAutomaticReconnect] = useState(false)
@@ -73,11 +78,11 @@ export default function MigratePage() {
   const [accountsToProcess, setAccountsToProcess] = useState<MatchingTarget[]>([])
   const [selectedAccounts, setSelectedAccounts] = useState<Set<string>>(new Set())
   const [activeTab, setActiveTab] = useState<'mastodon' | 'bluesky'>('bluesky')
-  const [stats, setStats] = useState<UserCompleteStats | null>(null)
+  const [stats, setStats] = useState<{ userStats: UserCompleteStats; globalStats: GlobalStats } | null>(null)
   const [globalStats, setGlobalStats] = useState<GlobalStats | undefined>(undefined)
   const [showModaleResults, setShowModaleResults] = useState(false)
   const [migrationResults, setMigrationResults] = useState<{ bluesky: { attempted: number; succeeded: number }; mastodon: { attempted: number; succeeded: number } } | null>(null)
-  const [missingProviders, setMissingProviders] = useState<('bluesky' | 'mastodon')[]>([])
+  const [missingProviders, setMissingProviders] = useState<MissingProvidersType>({})
   const [isReconnectionComplete, setIsReconnectionComplete] = useState(false)
   const [mastodonInstances, setMastodonInstances] = useState<string[]>([])
 
@@ -85,6 +90,7 @@ export default function MigratePage() {
   useEffect(() => {
     const verifyTokens = async () => {
       try {
+        setIsLoading(true)
         const response = await fetch('/api/auth/refresh', {
           method: 'POST',
           headers: {
@@ -94,10 +100,15 @@ export default function MigratePage() {
         const data = await response.json()
 
         if (!data.success && data.providers) {
-          setMissingProviders(data.providers)
+          setMissingProviders({
+            bluesky: 'reconnection' as const,
+            mastodon: 'reconnection' as const
+          })
         }
       } catch (error) {
         console.error('Error verifying tokens:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -105,97 +116,125 @@ export default function MigratePage() {
   }, []) // Ce useEffect s'exécute une seule fois au chargement
 
   useEffect(() => {
+    const fetchData = async () => {
+      console.log("🔄 [fetchData] Starting data fetch for user:", session?.user?.id)
+      
+      try {
+        setIsLoading(true)
+        const [totalMatches, userMatches, matchingResponse, refreshTokenResponse] = await Promise.all([
+          fetch('/api/stats/total'),
+          fetch('/api/stats'),
+          fetch('/api/migrate/matching_found', {
+            headers: {
+              'Cache-Control': 'no-cache'
+            }
+          }),
+          fetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: {
+              'Cache-Control': 'no-cache'
+            }
+          })
+        ])
 
-    console.log("USE EFFECT")
-    if (!session?.user?.id || !session.user?.has_onboarded || (!session.user.mastodon_id && !session.user.bluesky_id)) {
-      // redirect (`/dashboard`)
-      return 
-    }
+        console.log("📊 [fetchData] API responses received:", {
+          totalStats: totalMatches.status,
+          userStats: userMatches.status,
+          matching: matchingResponse.status,
+          refresh: refreshTokenResponse.status
+        })
 
-    const checkUserProfile = async () => {
-      setUserProfile(session.user)
+        const [globalStats, userStats, matchingData, refreshData] = await Promise.all([
+          totalMatches.json(),
+          userMatches.json(),
+          matchingResponse.json(),
+          refreshTokenResponse.json()
+        ])
 
-      // Parallel API calls
+        console.log("🔑 [fetchData] Refresh token response:", refreshData)
+        if (!refreshData.success && refreshData.providers) {
+          console.log("⚠️ [fetchData] Missing providers:", refreshData.missingProviders)
+          const providersObj = refreshData.providers.reduce((acc, provider) => ({
+            ...acc,
+            [provider]: 'reconnection' as const
+          }), {} as MissingProvidersType);
+          setMissingProviders(providersObj);
+        }
 
-      console.log("CHECKING USER PROFILE")
-      const [matchesResponse, statsResponse] = await Promise.all([
-        // checkTokens(),
-        fetch('/api/migrate/matching_found', {
-          headers: {
-            'Cache-Control': 'no-cache'
+        console.log("UserStats --->", userStats)
+        console.log("GlobalStats --->", globalStats)
+
+        // Vérification de la session et des providers manquants
+        const hasBluesky = !!session?.user?.bluesky_username
+        const hasMastodon = !!session?.user?.mastodon_id
+        const hasMissingProviders = refreshData.providers?.length > 0
+
+
+        console.log("👤 [fetchData] User connection status:", {
+          hasBluesky,
+          hasMastodon,
+          hasMissingProviders,
+          missingProviders: refreshData.providers
+        })
+
+        // Si l'utilisateur n'a pas les deux services ou a des providers manquants
+        if (!hasBluesky && !hasMastodon || hasMissingProviders) {
+          if (!hasMissingProviders)
+          {
+            setMissingProviders({
+              bluesky: !hasBluesky ? 'first_connect' : undefined,
+              mastodon: !hasMastodon ? 'first_connect' : undefined
+            })
           }
-        }),
-        fetch('/api/stats/total', {
-          headers: {
-            'Cache-Control': 'no-cache'
+          else
+          {
+            // Convertir les providers du refresh token en objet avec status 'reconnection'
+            const providersObj = refreshData.providers.reduce((acc, provider) => ({
+              ...acc,
+              [provider]: 'reconnection' as const
+            }), {} as MissingProvidersType);
+            setMissingProviders(providersObj);
+          }
+          console.log("⚠️ [fetchData] Missing providers:", refreshData.providers)
+        } else {
+          console.log("✅ [fetchData] User has all required connections, showing ReconnexionOptions")
+          setShowOptions(true)
+        }
+
+        if (matchingData.error) {
+          console.error("❌ [fetchData] Error fetching matches:", matchingData.error)
+          return
+        }
+
+        const matches = matchingData.matches.following
+        setAccountsToProcess(matches)
+
+        setStats({
+          userStats: {
+            connections: userStats.connections,
+            matches: userStats.matches,
+            updated_at: userStats.updated_at
+          },
+          globalStats: {
+            users: globalStats.users,
+            connections: globalStats.connections,
+            updated_at: globalStats.updated_at
           }
         })
-      ])
 
-      const matchesData = await matchesResponse.json()
-      const statsData: GlobalStats = await statsResponse.json()
-      console.log("****************************************",matchesData)
-      
-      if (matchesData.error) {
-        console.error("Error fetching matches:", matchesData.error)
+        setGlobalStats(globalStats)
+
+      } catch (error) {
+        console.error('❌ [fetchData] Error:', error)
+      } finally {
         setIsLoading(false)
-        return
       }
-      
-      const matches = matchesData.matches.following
-      
-      // Store the full matches data for migration
-      setAccountsToProcess(matches)
-      
-      // Use reduce for better performance with large datasets
-      const stats = matches.reduce((acc, match) => {
-        return {
-          connections: {
-            followers: 0, // This will be updated from the global stats
-            following: acc.connections.following + (match.bluesky_handle || match.mastodon_username ? 1 : 0)
-          },
-          matches: {
-            bluesky: {
-              total: acc.matches.bluesky.total + (match.bluesky_handle ? 1 : 0),
-              hasFollowed: acc.matches.bluesky.hasFollowed + (match.has_follow_bluesky ? 1 : 0),
-              notFollowed: acc.matches.bluesky.notFollowed + (match.bluesky_handle && !match.has_follow_bluesky ? 1 : 0)
-            },
-            mastodon: {
-              total: acc.matches.mastodon.total + (match.mastodon_username ? 1 : 0),
-              hasFollowed: acc.matches.mastodon.hasFollowed + (match.has_follow_mastodon ? 1 : 0),
-              notFollowed: acc.matches.mastodon.notFollowed + (match.mastodon_username && !match.has_follow_mastodon ? 1 : 0)
-            }
-          }
-        };
-      }, {
-        connections: {
-          followers: 0,
-          following: 0
-        },
-        matches: {
-          bluesky: {
-            total: 0,
-            hasFollowed: 0,
-            notFollowed: 0
-          },
-          mastodon: {
-            total: 0,
-            hasFollowed: 0,
-            notFollowed: 0
-          }
-        }
-      });
-
-      setStats(stats)
-      setGlobalStats(statsData)
-      console.log("****************************************",stats)
-      setIsLoading(false)
     }
 
-    checkUserProfile()
-
-    console.log("session from /migrate", session)
-  }, [session?.user?.id, session?.user?.has_onboarded])
+    if (session?.user?.id) {
+      fetchData()
+    }
+  }, [session?.user?.id])
 
   useEffect(() => {
     const fetchMastodonInstances = async () => {
@@ -413,9 +452,16 @@ export default function MigratePage() {
         const newStats = await response.json()
         console.log("API response stats:", newStats)
         setStats({
-          connections: newStats.connections,
-          matches: newStats.matches,
-          updated_at: "2024-01-30"
+          userStats: {
+            connections: newStats.connections,
+            matches: newStats.matches,
+            updated_at: newStats.updated_at
+          },
+          globalStats: {
+            users: newStats.globalStats.users,
+            connections: newStats.globalStats.connections,
+            updated_at: newStats.globalStats.updated_at
+          }
         })
       }
     } catch (error) {
@@ -424,46 +470,48 @@ export default function MigratePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#2a39a9]">
-      <div className="w-full max-w-[90rem] m-auto">
-        <div className="bg-[#2a39a9]">
-          <Header />
-          
-          <Suspense fallback={<div className="animate-pulse bg-blue-900/50 h-[600px]" />}>
-            <MigrateSea />
-          </Suspense>
+    <div className="min-h-screen bg-[#ebece7] mt-4 relative w-full max-w-[80rem] m-auto">
+      <div className="relative z-40">
+        <Header />
+      </div>
+      <div className="absolute inset-0 w-auto h-full ">
+      <DashboardSea />
 
-          <div className="relative">
+      <div className="relative min-h-[calc(100vh-4rem)] pt-80 ">
+      <div className="max-w-[78rem] mx-auto px-4 bg-[#2a39a9]">
+      {/* <div className="max-w-2xl mx-auto "> */}
             <Suspense fallback={<div className="animate-pulse bg-blue-900/50 h-24" />}>
-              <MigrateStats 
-                stats={stats} 
-                session={{
-                  user: {
-                    twitter_username: session?.user?.twitter_username ?? "",
-                    bluesky_username: session?.user?.bluesky_username ?? "",
-                    mastodon_username: session?.user?.mastodon_username ?? ""
-                  }
-                }}
+              <MigrateStats
+                  stats={stats?.userStats ?? null}
+                  session={{
+                    user: {
+                      twitter_username: session?.user?.twitter_username ?? "",
+                      bluesky_username: session?.user?.bluesky_username ?? "",
+                      mastodon_username: session?.user?.mastodon_username ?? ""
+                    }
+                  }}
               />
             </Suspense>
           </div>
 
           
-          <div className="bg-[#2a39a9] mt-4">
-            {missingProviders.length > 0 ? (
-              <div className="bg-[#2a39a9] rounded-xl p-8 max-w-md mx-auto border border-white">
-                <h2 className="text-2xl font-semibold mb-4 text-white">{tRefresh('title')}</h2>
-                <p className="text-blue-100 mb-6">{tRefresh('description')}</p>
+          <div className="max-w-[78rem] mx-auto bg-[#2a39a9]">
+            {Object.keys(missingProviders).length > 0 ? (
                 
+                <div className="bg-[#2a39a9] rounded-xl p-8 mx-auto">
                 <DashboardLoginButtons
-                  connectedServices={{
-                    bluesky: !missingProviders.includes('bluesky'),
-                    mastodon: !missingProviders.includes('mastodon'),
-                    twitter: true
-                  }}
+                  missingProviders={missingProviders}
                   hasUploadedArchive={true}
                   onLoadingChange={setIsLoading}
                   mastodonInstances={mastodonInstances}
+                  session={{
+                    user: {
+                      twitter_needed : session?.user?.twitter_username ?? null,
+                      bluesky_username: session?.user?.bluesky_username ?? "",
+                      mastodon_id: session?.user?.mastodon_id ?? ""
+                    }
+                  }}
+                  stats={stats?.userStats ?? null}
                 />
               </div>
             ) : (
@@ -477,7 +525,7 @@ export default function MigratePage() {
                           mastodon_username: session.user.mastodon_username ?? ""
                         }
                       }}
-                      stats={stats}
+                      stats={stats.userStats}
                       onSuccess={refreshStats}
                     />
               // ) : stats?.matches?.bluesky?.notFollowed === 0 && stats?.matches?.mastodon?.notFollowed === 0 ? (
@@ -503,9 +551,9 @@ export default function MigratePage() {
                     }
                   }}
                   stats={{
-                    bluesky_matches: stats?.matches.bluesky.total ?? 0,
-                    mastodon_matches: stats?.matches.mastodon.total ?? 0,
-                    matched_following: stats?.connections.following ?? 0
+                    bluesky_matches: stats?.userStats.matches.bluesky.total ?? 0,
+                    mastodon_matches: stats?.userStats.matches.mastodon.total ?? 0,
+                    matched_following: stats?.userStats.connections.following ?? 0
                   }}
                 />
               ) : showOptions ? (
@@ -515,6 +563,8 @@ export default function MigratePage() {
                   onManual={handleManualReconnection}
                   globalStats={globalStats}
                         />
+
+              
                       ) : (
                         <ManualReconnexion
                   matches={accountsToProcess}
@@ -535,6 +585,7 @@ export default function MigratePage() {
           <Footer />
         </div>
       </div>
-    </main>
+    {/* </div> */}
+    </div>
   )
 }

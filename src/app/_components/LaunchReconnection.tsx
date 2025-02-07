@@ -43,14 +43,14 @@ export default function LaunchReconnection({
     // Calculate total matches and hasFollowed based on connected accounts
     let total = 0;
     let hasFollowed = 0;
-    if (session.user.bluesky_username) {
+    // if (session.user.bluesky_username) {
       total += userStats.matches.bluesky.notFollowed;
       hasFollowed += userStats.matches.bluesky.hasFollowed;
-    }
-    if (session.user.mastodon_username) {
+    // }
+    // if (session.user.mastodon_username) {
       total += userStats.matches.mastodon.notFollowed;
       hasFollowed += userStats.matches.mastodon.hasFollowed;
-    }
+    // }
     setTotalMatches(total);
     setTotalHasFollowed(hasFollowed);
 
@@ -97,7 +97,7 @@ export default function LaunchReconnection({
           </p>
 
           {/* Messages pour les services non connectés avec des matches */}
-          {!session.user.bluesky_username && userStats.matches.bluesky.notFollowed > 0 && (
+          {/* {!session.user.bluesky_username && userStats.matches.bluesky.notFollowed > 0 && (
             <p className={`${plex.className} text-lg text-[#ebece7] mb-4`}>
               {t('blueskyConnectionMessage.before')}{' '}
               <span className="text-[#d6356f] font-bold">
@@ -114,18 +114,47 @@ export default function LaunchReconnection({
               </span>{' '}
               {t('mastodonConnectionMessage.after')}
             </p>
-          )}
+          )} */}
 
           {/* Afficher le bouton uniquement s'il y a des comptes à reconnecter */}
-          <Link 
-            href="/reconnect"
-            className={`${plex.className} inline-block p-6 bg-[#d6356f] text-[#ebece7] font-bold rounded-xl hover:bg-[#d6356f]/90 transition-colors duration-300 mb-8`}
-          >
-            {totalMatches > 0 
-              ? t('launchButton', { count: formatNumber(totalMatches) })
-              : t('alreadyReconnected', { count: formatNumber(totalHasFollowed) })
-            }
-          </Link>
+          <div className="flex justify-center w-full">
+            <Link 
+              href="/reconnect"
+              className={`${plex.className} inline-block p-6 bg-[#d6356f] text-[#ebece7] font-bold rounded-xl hover:bg-[#d6356f]/90 transition-colors duration-300 mb-8`}
+            >
+              {totalMatches > 0 
+                ? t('launchButton', { count: formatNumber(totalMatches) })
+                : t('alreadyReconnected', { count: formatNumber(totalHasFollowed) })
+              }
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 max-w-2xl">
+          <div className="bg-black/20 rounded-xl px-2 py-2 flex items-center gap-4">
+            <div className="bg-pink-500/20 p-2 rounded-full">
+              <Users className="w-5 h-5 text-pink-400" />
+            </div>
+            <div>
+              <p className={`${plex.className} text-sm text-white/60`}>{t('stats.twitterAccounts')}</p>
+              <p className={`${plex.className} text-xl font-bold text-white`}>
+                {formatNumber(userStats.connections.followers + userStats.connections.following)}
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-black/20 rounded-xl px-2 py-4 flex items-center gap-4">
+            <div className="bg-pink-500/20 p-2 rounded-full">
+              <Globe className="w-5 h-5 text-pink-400" />
+            </div>
+            <div>
+              <p className={`${plex.className} text-sm text-white/60`}>{t('stats.totalImported')}</p>
+              <p className={`${plex.className} text-2xl font-bold text-white`}>
+                {formatNumber(totalInDatabase)}
+              </p>
+            </div>
+          </div>
+        </div>
+
         </div>
 
         {/* Troisième ligne : Badge 2 et stats */}
@@ -137,32 +166,6 @@ export default function LaunchReconnection({
               fill
               className="object-contain"
             />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 max-w-md">
-          <div className="bg-black/20 rounded-xl p-4 flex items-center gap-4">
-            <div className="bg-pink-500/20 p-2 rounded-full">
-              <Users className="w-5 h-5 text-pink-400" />
-            </div>
-            <div>
-              <p className={`${plex.className} text-sm text-white/60`}>{t('stats.twitterAccounts')}</p>
-              <p className={`${plex.className} text-2xl font-bold text-white`}>
-                {formatNumber(userStats.connections.followers + userStats.connections.following)}
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-black/20 rounded-xl p-4 flex items-center gap-4">
-            <div className="bg-pink-500/20 p-2 rounded-full">
-              <Globe className="w-5 h-5 text-pink-400" />
-            </div>
-            <div>
-              <p className={`${plex.className} text-sm text-white/60`}>{t('stats.totalImported')}</p>
-              <p className={`${plex.className} text-2xl font-bold text-white`}>
-                {formatNumber(totalInDatabase)}
-              </p>
-            </div>
           </div>
         </div>
       </div>

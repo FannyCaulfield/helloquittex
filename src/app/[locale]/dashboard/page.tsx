@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import localFont from 'next/font/local';
+
 import Header from '@/app/_components/Header';
 import NewsletterRequest from '@/app/_components/NewsletterRequest';
 import NewsletterFirstSeen from '@/app/_components/NewsLetterFirstSeen';
@@ -29,6 +31,7 @@ import Footer from '@/app/_components/Footer';
 import { useTranslations } from 'next-intl';
 import { GlobalStats, UserCompleteStats } from '@/lib/types/stats';
 import ProgressSteps from '@/app/_components/ProgressSteps';
+import ImportExplanation from '@/app/_components/ImportExplanation';
 
 type MatchedProfile = {
   bluesky_username: string
@@ -39,11 +42,18 @@ type DashboardStats = {
   globalStats: GlobalStats;
 }
 
+const syneTactile = localFont({
+  src: '../../fonts/SyneTactile-Regular.ttf',
+  display: 'swap',
+});
+
+
 export default function DashboardPage() {
   const { data: session, status, update } = useSession();
   const router = useRouter();
   const params = useParams();
   const t = useTranslations('dashboard');
+  const title = useTranslations('dashboardSea');
 
   const [stats, setStats] = useState<DashboardStats>({
     userStats: {
@@ -229,11 +239,11 @@ export default function DashboardPage() {
         <Header />
       </div>
       <div className="absolute inset-0 w-full h-full pointer-events-none">
-        <DahsboardSea 
-          progress={progress} 
-          showAllBoats={!!(session?.user?.has_onboarded && (session?.user?.mastodon_username || session?.user?.bluesky_username))}
-        />
-      </div>
+        <DahsboardSea />
+      {/* </div> */}
+      {/* <div className="container flex flex-col mx-auto text-center gap-y-4 px-6 lg:gap-y-8 relative mt-[200px] md:mt-6"> */}
+          </div>
+      {/* </div> */}
 
       <AnimatePresence>
         {session?.user && !session.user.have_seen_newsletter && (
@@ -262,10 +272,15 @@ export default function DashboardPage() {
 
       <div className="relative min-h-[calc(100vh-4rem)] pt-80">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto ">
+
+          <h1 className={`${syneTactile.className} z-0 text-[40px] font-light text-[#d6356f] text-center `}>
+            {title('welcome')}
+            
+          </h1>
 
             <div className="mb-4 md:mb-8 relative z-10">
-              {session?.user?.has_onboarded && (session?.user?.mastodon_username || session?.user?.bluesky_username) ? (
+              {session?.user?.has_onboarded ? (
                 <LaunchReconnection
                   session={{
                     user: {
@@ -278,77 +293,13 @@ export default function DashboardPage() {
                   totalInDatabase={stats.globalStats.connections.following}
                   userStats={stats.userStats}
                 />
-              ) : (
-                <>
-                  <div className="text-center mb-8 md:mb-10 relative z-10">
-                    {progress === 100 ? (
-                      <div className="space-y-2 mt-12">
-                        <h2 className={`${plex.className} text-xl font-semibold text-indigo-100 text-balance`}>
-                          {t('migrationStep.completed1')}
-                        </h2>
-                        <p className={`${plex.className} text-indigo-200 text-balance whitespace-pre-line`}>
-                          {t('migrationStep.completed2', { count: daysLeft }).split('\n').join('\n')}
-                        </p>
-                      </div>
-                    ) : (
-                      <h2 className={`${plex.className} text-xl font-semibold text-indigo-100 mt-16`}>
-                        {t('migrationStep.nextSteps')}
-                      </h2>
-                    )}
-                  </div>
-                  <ProgressSteps
-                    hasTwitter={!!session?.user?.twitter_id}
-                    hasBluesky={!!session?.user?.bluesky_id}
-                    hasMastodon={!!session?.user?.mastodon_id}
-                    hasOnboarded={!!session?.user?.has_onboarded}
-                    stats={{
-                      following: stats.userStats.connections.following,
-                      followers: stats.userStats.connections.followers
-                    }}
-                    isShared={isShared}
-                    onProgressChange={setProgress}
-                  />
-                </>
-              )}
+              ) : null}
             </div>
-
-            {/* {stats && session?.user?.has_onboarded && (
-              <div className="relative z-10">
-                <UploadResults
-                  stats={stats}
-                  onShare={handleShare}
-                  setIsModalOpen={setIsModalOpen}
-                  hasTwitter={!!session?.user?.twitter_id}
-                  hasBluesky={!!session?.user?.bluesky_id}
-                  hasMastodon={!!session?.user?.mastodon_id}
-                  hasOnboarded={!!session?.user?.has_onboarded}
-                  userId={session?.user?.id}
-                  twitter_username={session?.user?.twitter_username || undefined}
-                  mastodon_username={session?.user?.mastodon_username || undefined}
-                  bluesky_username={session?.user?.bluesky_username || undefined}
-                />
-              </div>
-            )} */}
             {(connectedServicesCount < 3 || !hasOnboarded) &&
-              <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10 bg-white/5 backdrop-blur-sm rounded-2xl p-4">
-                {connectedServicesCount < 3 && (
-                  <div className="flex-1 max-w-md">
-                    <DashboardLoginButtons
-                      connectedServices={{
-                        twitter: !!session?.user?.twitter_id,
-                        bluesky: !!session?.user?.bluesky_id,
-                        mastodon: !!session?.user?.mastodon_id
-                      }}
-                      hasUploadedArchive={!!stats}
-                      onLoadingChange={setIsLoading}
-                      mastodonInstances={mastodonInstances}
-                    />
-                  </div>
-                )}
-
-                {!hasOnboarded && (
-                  <div className="flex-1 max-w-md flex items-center space-y-4 py-4">
-                    <motion.button
+              <div className="flex bg-[#2a39a9] flex-col sm:flex-row justify-center gap-4 relative z-10 backdrop-blur-sm rounded-2xl p-4">
+              {!hasOnboarded && (
+                <div className="flex flex-col space-y-4">
+                  <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => {
@@ -363,6 +314,7 @@ export default function DashboardPage() {
                       </div>
                       <span className="text-gray-400 group-hover:text-black transition-colors">›</span>
                     </motion.button>
+                  <ImportExplanation />
                   </div>
                 )}
               </div>
@@ -378,20 +330,19 @@ export default function DashboardPage() {
                     height={20}
                     className=" text-white mb-2"
                   />
-                  {/* <h2 className={`${plex.className} text-2xl font-medium text-white mb-2`}>{t('newsletter.title')}</h2> */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setShowNewsletterModal(true)}
                     className="group inline-flex items-center gap-3 text-indigo-200 hover:text-white transition-colors underline decoration-indigo-500"
                   >
-                    <Mail className="w-5 h-5" />
+                    {/* <Mail className="w-5 h-5" /> */}
                     <span className={`${plex.className} text-lg`}>{t('newsletter.subscribe')}</span>
                   </motion.button>
                 </div>
               )}
 
-              {progress < 100 &&
+              {!session?.user?.has_onboarded &&
                 <div className="flex flex-col items-center text-center space-y-4 mb-4">
                   <h2 className={`${plex.className} text-2xl font-medium text-white`}>
                     {t('tutorial.title')}

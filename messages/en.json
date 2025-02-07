@@ -56,6 +56,16 @@
     "dashboardLoginButtons": {
       "importTwitter": "Import my Twitter/X archive",
       "addSocialNetwork": "Add another social network",
+      "firstConnection": {
+        "title": "Start by connecting your Bluesky and/or Mastodon accounts to reconnect with your contacts",
+        "blueskyStats": "We found {{count}} accounts to follow on BlueSky, connect to retrieve your subscriptions",
+        "mastodonStats": "We found {{count}} accounts to follow on Mastodon, connect to retrieve your subscriptions"
+      },
+      "reconnection": {
+        "title": "Reconnection needed",
+        "bluesky": "Your BlueSky session has expired. For security reasons, we only use temporary access tokens that need to be renewed regularly.",
+        "mastodon": "We need additional permissions to allow reconnection with your subscriptions. Please reconnect to authorize these new features."
+      },
       "services": {
         "twitter": "Twitter/X",
         "mastodon": {
@@ -191,6 +201,7 @@
     "loading": "Loading your data...",
     "addSocialNetwork": "Add social network",
     "addSocialNetworkDescription": "Connect to other social networks to enhance your experience",
+    "importExplanation": "By importing your Twitter/X archive, you'll enable us to help you reconnect with your community on BlueSky and Mastodon. This secure process ensures you can find and follow your contacts who have already migrated to these new platforms. Your data is handled with care and used only for reconnection purposes.",
     "migrationStep": {
       "completed1": "Congratulations! You’ve completed the first of the two migration steps.",
       "completed2": "Don't forget to invite your subscribers to register on OpenPortability. In 1min they'll be reconnected to your account, even without their archive.\nPhase 2 is arriving in just a few days! According to your preferences, you’ll receive a notification by email or can follow our launch on X, BlueSky, and Mastodon.\nStay tuned—exciting surprises await!",
@@ -519,22 +530,22 @@
   },
   "launchReconnection": {
     "firstObjective": {
-      "before": "First objective completed",
-      "after": "! The second step is in sight: launch the reconnection"
+      "before": "Congratulations",
+      "after": ", first step completed!"
     },
-    "inviteMessage": "Don't forget to invite your followers to sign up on OpenPortability. In 1 minute they can be reconnected to your account, even without their archive. Stay tuned for great surprises!",
+    "inviteMessage": "We have found your contacts, it's time to reconnect with them! Don't forget to invite your followers to sign up on OpenPortability. In 1 minute they can be reconnected to your account. Stay tuned, exciting surprises await!",
+    "launchButton": "LAUNCH RECONNECTION WITH {count} ACCOUNTS",
     "blueskyConnectionMessage": {
-      "before": "Connect your Bluesky account to automatically reconnect with",
-      "after": "accounts!"
+      "before": "We found",
+      "after": "accounts to follow on Bluesky"
     },
     "mastodonConnectionMessage": {
-      "before": "Connect your Mastodon account to automatically reconnect with",
-      "after": "accounts!"
+      "before": "We found",
+      "after": "accounts to follow on Mastodon"
     },
-    "launchButton": "Launch your reconnection with {count} accounts!",
     "stats": {
-      "twitterAccounts": "Twitter accounts",
-      "totalImported": "Total imported"
+      "twitterAccounts": "Twitter Accounts",
+      "totalImported": "Total Imported"
     },
     "alreadyReconnected": "We have already reconnected you with {count} accounts. Come back later to continue your reconnection!"
   },

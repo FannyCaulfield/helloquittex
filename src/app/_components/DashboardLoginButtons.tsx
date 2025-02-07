@@ -10,39 +10,39 @@ import { BskyAgent } from '@atproto/api'
 import Image from 'next/image'
 import BlueSkyLogin from './BlueSkyLogin'
 import MastodonLoginButton from './MastodonLoginButton'
+import { UserCompleteStats } from '@/lib/types/stats';
 
 import mastodonIcon from '../../../public/newSVG/masto.svg'
 import blueskyIcon from '../../../public/newSVG/BS.svg'
 import twitterIcon from '../../../public/newSVG/X.svg'
 
+type ProviderStatus = 'reconnection' | 'first_connect';
+type MissingProvidersType = {
+  [key in 'bluesky' | 'mastodon']?: ProviderStatus;
+};
 
 interface DashboardLoginButtonsProps {
-  connectedServices: {
-    twitter?: boolean
-    bluesky?: boolean
-    mastodon?: boolean
-  }
-  hasUploadedArchive: boolean
-  onLoadingChange: (isLoading: boolean) => void
-  mastodonInstances: string[]
-}
-
-const itemVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-  },
+  missingProviders: MissingProvidersType;
+  hasUploadedArchive: boolean;
+  onLoadingChange: (isLoading: boolean) => void;
+  mastodonInstances: string[];
+  session?: {
+    user?: {
+      twitter_needed : string | null;
+      bluesky_username?: string | null;
+      mastodon_id?: string | null;
+    }
+  };
+  stats?: UserCompleteStats | null;
 }
 
 export default function DashboardLoginButtons({
-  connectedServices,
+  missingProviders,
   hasUploadedArchive,
   onLoadingChange,
-  mastodonInstances
+  mastodonInstances,
+  session,
+  stats
 }: DashboardLoginButtonsProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedService, setSelectedService] = useState<string | null>(null)
@@ -53,6 +53,38 @@ export default function DashboardLoginButtons({
 
   const identifierRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+
+  console.log('🔑 [DashboardLoginButtons] Missing providers:', missingProviders)
+
+  // Compter les providers par type
+  const firstConnectCount = Object.values(missingProviders).filter(status => status === 'first_connect').length;
+  const reconnectionCount = Object.values(missingProviders).filter(status => status === 'reconnection').length;
+
+  // Fonction pour obtenir le texte du bouton en fonction du statut
+  const getButtonText = (provider: 'bluesky' | 'mastodon') => {
+    const status = missingProviders[provider];
+    if (status === 'first_connect') {
+      return t(`firstConnection.${provider}Stats.before`);
+    } else if (status === 'reconnection') {
+      return t(`reconnection.${provider}`);
+    }
+    return t(`connectedDashboard.${provider}`);
+  };
+
+  // Détermine si on doit afficher un provider
+  const shouldShowProvider = (provider: 'bluesky' | 'mastodon') => {
+    if (firstConnectCount === 2) {
+      // Si les deux sont en first_connect, on montre tout
+      return true;
+    } else if (reconnectionCount > 0 && firstConnectCount === 0) {
+      // Si que des reconnections, on montre les reconnections
+      return missingProviders[provider] === 'reconnection';
+    } else if (reconnectionCount > 0 && firstConnectCount > 0) {
+      // Si mix, on montre que les reconnections
+      return missingProviders[provider] === 'reconnection';
+    }
+    return false;
+  };
 
   const handleTwitterSignIn = async () => {
     setIsLoading(true)
@@ -88,7 +120,16 @@ export default function DashboardLoginButtons({
 
   const renderServiceButton = (service: string, icon: string, label: string) => (
     <motion.button
-      variants={itemVariants}
+      variants={{
+        hidden: {
+          opacity: 0,
+          y: 20,
+        },
+        visible: {
+          opacity: 1,
+          y: 0,
+        },
+      }}
       initial="hidden"
       animate="visible"
       whileHover={{ scale: 1.05 }}
@@ -112,59 +153,76 @@ export default function DashboardLoginButtons({
   )
 
   return (
-    <div className="flex flex-col justify-evenly gap-3 h-full">
-      {!connectedServices.twitter && (
-        <>
-          {renderServiceButton('twitter', twitterIcon, t('connectedDashboard.twitter'))}
-        </>
-      )}
-
-      {!connectedServices.bluesky && (
-        <>
-          {renderServiceButton('bluesky', blueskyIcon, t('connectedDashboard.bluesky'))}
-          <AnimatePresence>
-            {selectedService === 'bluesky' && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="bg-white rounded-2xl shadow-xl text-black mt-2">
-                  <BlueSkyLogin onLoginComplete={() => {
-                    setSelectedService(null)
-                    onLoadingChange(true)
-                  }} />
-                </div>
-              </motion.div>
+    <div className="flex flex-col gap-6 mx-auto max-w-[50rem] w-full">
+      {/* Title and Stats Grid */}
+      <div className="grid grid-cols-1 gap-4 text-center">
+        <h2 className={`${plex.className} text-2xl font-semibold text-white`}>
+          {(!session?.user?.bluesky_username && !session?.user?.mastodon_id)
+            ? t('firstConnection.title')
+            : t('reconnection.title')
+          }
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-blue-100">
+          <div>
+            {(!session?.user?.bluesky_username && stats?.matches?.bluesky.total && stats.matches.bluesky.total > 0) && (
+              <p>
+                {t('firstConnection.blueskyStats.before')}{' '}
+                <span className="font-bold">{stats.matches.bluesky.total}</span>{' '}
+                {t('firstConnection.blueskyStats.after')}
+              </p>
             )}
-          </AnimatePresence>
-        </>
-      )}
-
-      {!connectedServices.mastodon && (
-        <>
-          {renderServiceButton('mastodon', mastodonIcon, t('connectedDashboard.mastodon'))}
-          <AnimatePresence>
-            {selectedService === 'mastodon' && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="bg-white rounded-2xl shadow-xl text-black mt-2">
-                  <MastodonLoginButton
-                    onLoadingChange={onLoadingChange}
-                    showForm={true}
-                  />
-                </div>
-              </motion.div>
+            {(!missingProviders.bluesky && session?.user?.bluesky_username) && (
+              <p>{t('reconnection.bluesky')}</p>
             )}
-          </AnimatePresence>
-        </>
-      )}
+          </div>
+          <div>
+            {(!session?.user?.mastodon_id && stats?.matches?.mastodon.total && stats.matches.mastodon.total > 0) && (
+              <p>
+                {t('firstConnection.mastodonStats.before')}{' '}
+                <span className="font-bold">{stats.matches.mastodon.total}</span>{' '}
+                {t('firstConnection.mastodonStats.after')}
+              </p>
+            )}
+            {(!missingProviders.mastodon && session?.user?.mastodon_id) && (
+              <p>{t('reconnection.mastodon')}</p>
+            )}
+          </div>
+        </div>
+      </div>
 
+      {/* Login Buttons Grid */}
+      <div className={`grid gap-4 w-full ${
+        // Si on a Twitter + un seul autre bouton OU un seul bouton sans Twitter
+        ((!session?.user?.twitter_needed && (shouldShowProvider('bluesky') !== shouldShowProvider('mastodon'))) || 
+         (session?.user?.twitter_needed && shouldShowProvider('bluesky') && shouldShowProvider('mastodon')))
+        ? 'grid-cols-1' // Une seule colonne
+        : 'grid-cols-1 md:grid-cols-2' // Deux colonnes sur desktop
+      }`}>
+        {!session?.user?.twitter_needed && (
+          <div className="col-span-1">
+            {renderServiceButton('twitter', twitterIcon, t('connectedDashboard.twitter'))}
+          </div>
+        )}
+
+        {shouldShowProvider('bluesky') && (
+          <div className="col-span-1">
+            <BlueSkyLogin
+              onLoadingChange={onLoadingChange}
+              buttonText={getButtonText('bluesky')}
+            />
+          </div>
+        )}
+        
+        {shouldShowProvider('mastodon') && (
+          <div className="col-span-1">
+            <MastodonLoginButton
+              onLoadingChange={onLoadingChange}
+              buttonText={getButtonText('mastodon')}
+              mastodonInstances={mastodonInstances}
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -12,6 +12,7 @@ import seaBackground from '../../../public/sea.svg';
 import arrowGrowth from '../../../public/v2/uil_arrow-growth.svg';
 import chainon from '../../../public/v2/chainon.svg';
 import Boat from './Boat';
+// import MigrateStats from './MigrateStats';
 
 const syneTactile = localFont({
   src: '../fonts/SyneTactile-Regular.ttf',
@@ -27,54 +28,6 @@ interface SeaProps {
   } | null;
 }
 
-interface MigrateStatsProps {
-  stats: {
-    total_following: number;
-    matched_following: number;
-    bluesky_matches: number;
-    mastodon_matches: number;
-  };
-}
-
-function MigrateStats({ stats }: MigrateStatsProps) {
-  const t = useTranslations('migrateSea');
-
-  return (
-    <div className="w-full mt-[250px] bg-[#2a39a9]">
-      <h1 className={`${syneTactile.className} text-[5rem] text-[#d6356f] z-[15] text-center font-bold`}>
-        {t('title')}
-      </h1>
-
-      <div className="flex items-center justify-center gap-2 ">
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-2">
-            <span className={`${plex.className} text-[80px] text-[#66D9E8] font-bold`}>
-              {stats.total_following}
-            </span>
-            <Image src={arrowGrowth} alt="" width={30} height={30} />
-          </div>
-          <p className={`${plex.className} text-white text-center text-sm mt-2 max-w-[250px]`}>
-            {t('stats.awaitingConnection')}
-          </p>
-        </div>
-
-        <Image src={chainon} alt="" width={100} height={100} className="mx-4" />
-
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-2">
-            <span className={`${plex.className} text-[80px] text-[#6fce97] font-bold`}>
-              {stats.matched_following}
-            </span>
-            <FaCheck className="text-[#6fce97] text-3xl" />
-          </div>
-          <p className={`${plex.className} text-white text-center text-sm mt-2 max-w-[250px]`}>
-            {t('stats.alreadyTransferred')}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function MigrateSea({ stats }: SeaProps) {
   const t = useTranslations('migrateSea');
@@ -82,31 +35,38 @@ export default function MigrateSea({ stats }: SeaProps) {
 
   const Boats = () => {
     return (
-      <>
-        <Boat model={3} top={140} left={40} scale={2} zindex={1} />
-        <Boat model={2} top={190} left={15} scale={1.2} zindex={1} />
-        <Boat model={4} top={210} left={75} scale={1.2} zindex={1} />
-      </>
+      <div className="w-full relative">
+        {/* Bateau de gauche - visible uniquement sur écran large */}
+        <div className="hidden md:block">
+          <Boat model={2} top={145} left={9} scale={2} zindex={1} />
+        </div>
+        
+        {/* Bateau du milieu - toujours visible */}
+        <Boat model={3} top={130} left={42} scale={2} zindex={1} />
+        
+        {/* Bateau de droite - visible uniquement sur écran large */}
+        <div className="hidden md:block">
+          <Boat model={4} top={180} left={77} scale={2} zindex={1} />
+        </div>
+      </div>
     );
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full bg-[#2a39a9]">
-      <div className="relative h-[23rem] bg-[#2a39a9]">
-        <Image src={seaBackground} fill alt="" className="object-cover" />
-        <div className="relative z-[5] ">
-          <Image
-            src={logo}
-            alt="OpenPortability Logo"
-            width={306}
-            height={125}
-            className="mx-auto"
-          />
-          <div className="w-full ">
-            <Boats />
-          </div>
-        </div>
-        {stats && <MigrateStats stats={stats} />}
+    <div className="relative w-full h-[20rem] min-w-full">
+      <Image src={seaBackground} fill alt="" className="object-cover" />
+
+      <div className="relative z-[5] w-full">
+        <Image
+          src={logo}
+          alt="OpenPortability Logo"
+          width={306}
+          height={125}
+          className="mx-auto"
+        />
+        {/* <div className="w-full relative">
+          <Boats />
+        </div> */}
       </div>
     </div>
   );

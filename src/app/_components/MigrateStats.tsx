@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { plex, caveat } from '@/app/fonts/plex';
 import arrowGrowth from '../../../public/v2/uil_arrow-growth.svg';
 import chainon from '../../../public/v2/chainon.svg';
+import localFont from 'next/font/local';
+import { UserCompleteStats } from '@/lib/types/stats';
 
 interface StatsProps {
   session: {
@@ -15,25 +17,13 @@ interface StatsProps {
       mastodon_username?: string;
     };
   };
-  stats?: {
-    connections: {
-      followers: number;
-      following: number;
-    };
-    matches: {
-      bluesky: {
-        total: number;
-        hasFollowed: number;
-        notFollowed: number;
-      };
-      mastodon: {
-        total: number;
-        hasFollowed: number;
-        notFollowed: number;
-      };
-    };
-  } | null;
+  stats?: UserCompleteStats | null;
 }
+
+const syneTactile = localFont({
+  src: '../fonts/SyneTactile-Regular.ttf',
+  display: 'swap',
+});
 
 export default function MigrateStats({ stats, session }: StatsProps) {
   const t = useTranslations('migrateSea');
@@ -42,21 +32,16 @@ export default function MigrateStats({ stats, session }: StatsProps) {
 
   if (!stats) return null;
 
-  const totalToFollow = 
-    (session.user.bluesky_username ? stats.matches.bluesky.notFollowed : 0) + 
-    (session.user.mastodon_username ? stats.matches.mastodon.notFollowed : 0);
-    
-  const totalFollowed = 
-    (session.user.bluesky_username ? stats.matches.bluesky.hasFollowed : 0) + 
-    (session.user.mastodon_username ? stats.matches.mastodon.hasFollowed : 0);
+  const totalToFollow = stats.matches.bluesky.notFollowed + stats.matches.mastodon.notFollowed;
+  const totalFollowed = stats.matches.bluesky.hasFollowed + stats.matches.mastodon.hasFollowed;
 
   return (
-    <div className="w-full mt-[250px] bg-[#2a39a9]">
-      <h1 className={`${caveat.className} text-[5rem] text-[#d6356f] z-[15] text-center font-bold`}>
+    <div className="mt-12 bg-[#2a39a9] max-w-[78rem] mx-auto">
+      <h1 className={`${syneTactile.className} bg-[#2a39a9] text-[5rem] text-[#d6356f] z-[15] text-center font-bold`}>
         {t('title')}
       </h1>
 
-      <div className="flex items-center justify-center gap-2">
+      <div className="flex items-center justify-center gap-2 bg-[#2a39a9]">
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-2">
             <span className={`${plex.className} text-[80px] text-[#66D9E8] font-bold`}>

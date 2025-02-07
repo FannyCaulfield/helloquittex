@@ -54,6 +54,18 @@ export async function DELETE() {
         }
         console.log('Successfully deleted import_job')
 
+
+        const { error: statsReportError } = await supabase
+        .from('user_stats_cache')
+        .delete()
+        .eq('user_id', userId)
+
+      if (statsReportError) {
+        console.error('Error deleting stats_report:', statsReportError)
+        throw new Error(`{statsReportError.message}`)
+      }
+      console.log('Successfully deleted import_job')
+
         const { error: sourceError } = await supabase
         .from('sources')
         .delete()

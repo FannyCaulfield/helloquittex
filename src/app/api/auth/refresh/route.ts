@@ -38,13 +38,17 @@ export async function POST(request: Request) {
     }
 
     // Si aucun compte n'est configuré
-    if (!session.user.bluesky_username && !session.user.mastodon_username) {
-      // console.log('ℹ️ [POST /api/auth/refresh] No social accounts configured for user:', session.user.id)
-      return NextResponse.json({ 
-        success: false,
-        error: 'No social accounts configured'
-      })
-    }
+    // if (!session.user.bluesky_username && !session.user.mastodon_username) {
+    //   const missingProviders = []
+    //   if (!session.user.bluesky_username) missingProviders.push('bluesky')
+    //   if (!session.user.mastodon_username) missingProviders.push('mastodon')
+      
+    //   return NextResponse.json({ 
+    //     success: false,
+    //     error: 'No social accounts configured',
+    //     missingProviders
+    //   })
+    // }
 
     // Si des providers nécessitent une réauthentification
     if (invalidProviders.length > 0) {
@@ -55,8 +59,8 @@ export async function POST(request: Request) {
           error: 'Token refresh failed',
           providers: invalidProviders,
           // ...results
-        }, 
-        { status: 401 }
+        }
+        // { status: 401 }
       )
     }
 

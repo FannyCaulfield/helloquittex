@@ -56,6 +56,22 @@
     "dashboardLoginButtons": {
       "importTwitter": "Importer mon archive Twitter/X",
       "addSocialNetwork": "Ajoutez un autre réseau social",
+      "firstConnection": {
+        "title": "Commencez par associer vos comptes bluesky et / ou mastodon pour vous reconnecter a vos contacts",
+        "blueskyStats": {
+          "before": "Nous avons trouve",
+          "after": "comptes a suivre sur BlueSky, connectez-vous pour recuperer vos abonnements"
+        },
+        "mastodonStats": {
+          "before": "Nous avons trouve",
+          "after": "comptes a suivre sur Mastodon, connectez-vous pour recuperer vos abonnements"
+        }
+      },
+      "reconnection": {
+        "title": "Reconnexion nécessaire",
+        "bluesky": "Votre session BlueSky a expiré. Pour des raisons de sécurité, nous n'utilisons que des jetons d'accès temporaires qui doivent être renouvelés régulièrement.",
+        "mastodon": "Nous avons besoin de permissions supplémentaires pour permettre la reconnexion avec vos abonnements. Veuillez vous reconnecter pour autoriser ces nouvelles fonctionnalités."
+      },
       "services": {
         "twitter": "Twitter/X",
         "mastodon": {
@@ -183,6 +199,7 @@
       "nextSteps": "Effectuez les étapes suivantes pour voguer vers de nouveaux horizons !"
     },
     "importButton": "Importer mon archive Twitter/X",
+    "importExplanation": "En important votre archive Twitter/X, vous nous permettrez de vous aider à retrouver votre communauté sur BlueSky et Mastodon. Ce processus sécurisé vous permet de retrouver et suivre vos contacts qui ont déjà migré vers ces nouvelles plateformes. Vos données sont traitées avec soin et utilisées uniquement à des fins de reconnexion.",
     "shareModal": {
       "title": "Partager votre voyage",
       "shareOn": "Partager sur {platform}",
@@ -513,15 +530,15 @@
       "before": "Bravo",
       "after": ", première étape franchie !"
     },
-    "inviteMessage": "Nous avons retrouvé vos contacts, il est temps de les reconnecter !",
-    "launchButton": "RECONNECTER {count} COMPTES",
+    "inviteMessage": "Nous avons retrouvé vos contacts, il est temps de les reconnecter ! N'oubliez pas d'inviter vos abonnés à s'inscrire sur OpenPortability. En 1min ils pourront être reconnectés à votre compte. Restez à l'affût, de belles surprises vous attendent !",
+    "launchButton": "LANCEZ LA RECONNEXION AVEC {count} COMPTES",
     "blueskyConnectionMessage": {
       "before": "Nous avons trouvé",
-      "after": "comptes à suivre sur Bluesky, connectez-vous pour récupérer vos followings"
+      "after": "comptes à suivre sur Bluesky"
     },
     "mastodonConnectionMessage": {
       "before": "Nous avons trouvé",
-      "after": "comptes à suivre sur Mastodon, connectez-vous pour récupérer vos followings"
+      "after": "comptes à suivre sur Mastodon"
     },
     "stats": {
       "twitterAccounts": "Comptes Twitter",

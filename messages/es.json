@@ -143,6 +143,18 @@
         }
     },
     "dashboardLoginButtons": {
+        "importTwitter": "Importar mi archivo Twitter/X",
+        "addSocialNetwork": "Agregar otra red social",
+        "firstConnection": {
+            "title": "Comience conectando sus cuentas de Bluesky y/o Mastodon para reconectarse con sus contactos",
+            "blueskyStats": "Encontramos {{count}} cuentas para seguir en BlueSky, conéctese para recuperar sus suscripciones",
+            "mastodonStats": "Encontramos {{count}} cuentas para seguir en Mastodon, conéctese para recuperar sus suscripciones"
+        },
+        "reconnection": {
+            "title": "Reconexión necesaria",
+            "bluesky": "Su sesión de BlueSky ha expirado. Por razones de seguridad, solo utilizamos tokens de acceso temporales que deben renovarse regularmente.",
+            "mastodon": "Necesitamos permisos adicionales para permitir la reconexión con sus suscripciones. Por favor, vuelva a conectarse para autorizar estas nuevas funciones."
+        },
         "services": {
             "mastodon": {
                 "instances": {
@@ -164,8 +176,6 @@
             "twitter": "Twitter/X",
             "bluesky": "BlueSky"
         },
-        "importTwitter": "Importar mi archivo Twitter/X",
-        "addSocialNetwork": "Agregar otra red social",
         "connectedDashboard": {
             "twitter": "Asocio mi cuenta Twitter/X",
             "bluesky": "Asocio mi cuenta Bluesky",
@@ -209,6 +219,7 @@
         }
     },
     "dashboard": {
+        "importExplanation": "Al importar tu archivo de Twitter/X, nos permitirás ayudarte a reconectar con tu comunidad en BlueSky y Mastodon. Este proceso seguro te permite encontrar y seguir a tus contactos que ya han migrado a estas nuevas plataformas. Tus datos son tratados con cuidado y utilizados únicamente con fines de reconexión.",
         "migrationStep": {
             "completed": "Ha completado la primera etapa de su migración",
             "daysLeft": "¡{count} días restantes!",
@@ -423,28 +434,24 @@
     },
     "launchReconnection": {
         "firstObjective": {
-            "before": "¡Primer objetivo completado",
-            "after": "! El segundo paso está a la vista: inicia la reconexión"
+            "before": "¡Felicitaciones",
+            "after": ", primer paso completado!"
         },
-        "inviteMessage": "No olvides invitar a tus seguidores a registrarse en OpenPortability. En 1 minuto pueden reconectarse a tu cuenta, incluso sin su archivo. ¡Mantente atento a grandes sorpresas!",
+        "inviteMessage": "¡Hemos encontrado tus contactos, es hora de reconectarte con ellos! No olvides invitar a tus seguidores a registrarse en OpenPortability. En 1 minuto podrán reconectarse a tu cuenta. ¡Mantente atento, te esperan emocionantes sorpresas!",
+        "launchButton": "INICIAR RECONEXIÓN CON {count} CUENTAS",
         "blueskyConnectionMessage": {
-            "before": "Conecta tu cuenta de Bluesky para reconectar automáticamente con",
-            "after": "cuentas!"
+            "before": "Encontramos",
+            "after": "cuentas para seguir en Bluesky"
         },
         "mastodonConnectionMessage": {
-            "before": "Conecta tu cuenta de Mastodon para reconectar automáticamente con",
-            "after": "cuentas!"
+            "before": "Encontramos",
+            "after": "cuentas para seguir en Mastodon"
         },
-        "launchButton": "¡Inicia tu reconexión con {count} cuentas!",
         "stats": {
             "twitterAccounts": "Cuentas de Twitter",
-            "totalImported": "Total importado"
+            "totalImported": "Total importadas"
         },
-        "title": "Reconexión Automática",
-        "description": "Hemos encontrado {count} cuentas que puedes reconectar automáticamente.",
-        "button": "INICIAR RECONEXIÓN AUTOMÁTICA",
-        "loading": "Reconexión en curso...",
-        "alreadyReconnected": "Ya te hemos reconectado con {count} cuentas. ¡Vuelve más tarde para continuar tu reconexión!"
+        "alreadyReconnected": "¡Ya te hemos reconectado con {count} cuentas. ¡Vuelve más tarde para continuar tu reconexión!"
     },
     "privacy_policy": {
         "title": "Aviso de Información sobre Protección de Datos",
